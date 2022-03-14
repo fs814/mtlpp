@@ -7,128 +7,115 @@
 
 #include "defines.hpp"
 
-namespace ns
-{
-    struct Handle
-    {
-        const void* ptr;
-    };
+namespace ns {
+struct Handle {
+  const void *ptr;
+};
 
-    class Object
-    {
-    public:
-        inline const void* GetPtr() const { return m_ptr; }
+class Object {
+public:
+  inline const void *GetPtr() const { return m_ptr; }
 
-        inline operator bool() const { return m_ptr != nullptr; }
+  inline operator bool() const { return m_ptr != nullptr; }
 
-    protected:
-        Object();
-        Object(const Handle& handle);
-        Object(const Object& rhs);
+protected:
+  Object();
+  Object(const Handle &handle);
+  Object(const Object &rhs);
 #if MTLPP_CONFIG_RVALUE_REFERENCES
-        Object(Object&& rhs);
+  Object(Object &&rhs);
 #endif
-        virtual ~Object();
+  virtual ~Object();
 
-        Object& operator=(const Object& rhs);
+  Object &operator=(const Object &rhs);
 #if MTLPP_CONFIG_RVALUE_REFERENCES
-        Object& operator=(Object&& rhs);
+  Object &operator=(Object &&rhs);
 #endif
 
-        inline void Validate() const
-        {
+  inline void Validate() const {
 #if MTLPP_CONFIG_VALIDATE
-            assert(m_ptr);
+    assert(m_ptr);
 #endif
-        }
+  }
 
-        const void* m_ptr = nullptr;
-    };
+  const void *m_ptr = nullptr;
+};
 
-    struct Range
-    {
-        inline Range(uint32_t location, uint32_t length) :
-            Location(location),
-            Length(length)
-        { }
+struct Range {
+  inline Range(uint32_t location, uint32_t length)
+      : Location(location), Length(length) {}
 
-        uint32_t Location;
-        uint32_t Length;
-    };
+  uint32_t Location;
+  uint32_t Length;
+};
 
-    class ArrayBase : public Object
-    {
-    public:
-        ArrayBase() { }
-        ArrayBase(const Handle& handle) : Object(handle) { }
+struct Size {
+  inline Size(uint32_t x_, uint32_t y_, uint32_t z_) : x(x_), y(y_), z(z_) {}
 
-        uint32_t GetSize() const;
+  uint32_t x;
+  uint32_t y;
+  uint32_t z;
+};
 
-    protected:
-        void* GetItem(uint32_t index) const;
-    };
+class ArrayBase : public Object {
+public:
+  ArrayBase() {}
+  ArrayBase(const Handle &handle) : Object(handle) {}
 
-    template<typename T>
-    class Array : public ArrayBase
-    {
-    public:
-        Array() { }
-        Array(const Handle& handle) : ArrayBase(handle) { }
+  uint32_t GetSize() const;
 
-        const T operator[](uint32_t index) const
-        {
-            return Handle{ GetItem(index) };
-        }
+protected:
+  void *GetItem(uint32_t index) const;
+};
 
-        T operator[](uint32_t index)
-        {
-            return Handle{ GetItem(index) };
-        }
-    };
+template <typename T> class Array : public ArrayBase {
+public:
+  Array() {}
+  Array(const Handle &handle) : ArrayBase(handle) {}
 
-    class DictionaryBase : public Object
-    {
-    public:
-        DictionaryBase() { }
-        DictionaryBase(const Handle& handle) : Object(handle) { }
+  const T operator[](uint32_t index) const { return Handle{GetItem(index)}; }
 
-    protected:
+  T operator[](uint32_t index) { return Handle{GetItem(index)}; }
+};
 
-    };
+class DictionaryBase : public Object {
+public:
+  DictionaryBase() {}
+  DictionaryBase(const Handle &handle) : Object(handle) {}
 
-    template<typename KeyT, typename ValueT>
-    class Dictionary : public DictionaryBase
-    {
-    public:
-        Dictionary() { }
-        Dictionary(const Handle& handle) : DictionaryBase(handle) { }
-    };
+protected:
+};
 
-    class String : public Object
-    {
-    public:
-        String() { }
-        String(const Handle& handle) : Object(handle) { }
-        String(const char* cstr);
+template <typename KeyT, typename ValueT>
+class Dictionary : public DictionaryBase {
+public:
+  Dictionary() {}
+  Dictionary(const Handle &handle) : DictionaryBase(handle) {}
+};
 
-        const char* GetCStr() const;
-        uint32_t    GetLength() const;
-    };
+class String : public Object {
+public:
+  String() {}
+  String(const Handle &handle) : Object(handle) {}
+  String(const char *cstr);
 
-    class Error : public Object
-    {
-    public:
-        Error();
-        Error(const Handle& handle) : Object(handle) { }
+  const char *GetCStr() const;
+  uint32_t GetLength() const;
+};
 
-        String   GetDomain() const;
-        uint32_t GetCode() const;
-        //@property (readonly, copy) NSDictionary *userInfo;
-        String   GetLocalizedDescription() const;
-        String   GetLocalizedFailureReason() const;
-        String   GetLocalizedRecoverySuggestion() const;
-        String   GetLocalizedRecoveryOptions() const;
-        //@property (nullable, readonly, strong) id recoveryAttempter;
-        String   GetHelpAnchor() const;
-    };
-}
+class Error : public Object {
+public:
+  Error();
+  Error(const Handle &handle) : Object(handle) {}
+
+  String GetDomain() const;
+  uint32_t GetCode() const;
+  //@property (readonly, copy) NSDictionary *userInfo;
+  String GetLocalizedDescription() const;
+  String GetLocalizedFailureReason() const;
+  String GetLocalizedRecoverySuggestion() const;
+  String GetLocalizedRecoveryOptions() const;
+  //@property (nullable, readonly, strong) id recoveryAttempter;
+  String GetHelpAnchor() const;
+};
+} // namespace ns

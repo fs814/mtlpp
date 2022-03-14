@@ -2,8 +2,7 @@
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-build_mac()
-{
+build_mac() {
     local ver=$1
     local output="../.build/macos_$ver"
     local objcflags="-std=c++11 -x objective-c++ -mmacosx-version-min=$ver"
@@ -22,10 +21,11 @@ build_mac()
     clang++ $cppflags $ldflags ../examples/02_triangle.cpp $output/mtlpp.o -o $output/02_triangle
     clang++ $cppflags $ldflags ../examples/03_compute.cpp $output/mtlpp.o -o $output/03_compute
     clang++ $cppflags $ldflags ../examples/04_window.cpp $output/mtlpp.o $output/window.o -o $output/04_window
+    clang++ $cppflags $ldflags ../examples/05_cpu.cpp $output/mtlpp.o $output/window.o -o $output/05_cpu
+    clang++ $cppflags $ldflags ../examples/06_gpu.cpp $output/mtlpp.o $output/window.o -o $output/06_gpu
 }
 
-build_ios()
-{
+build_ios() {
     local ver=$1
     local arch="$2"
     local output="../.build/ios_${ver}_${arch}"
@@ -45,8 +45,7 @@ build_ios()
     clang++ $cppflags $ldflags ../examples/03_compute.cpp $output/mtlpp.o -o $output/02_compute
 }
 
-build_tvos()
-{
+build_tvos() {
     local ver=$1
     local arch="$2"
     local output="../.build/tvos_${ver}_${arch}"
@@ -91,9 +90,9 @@ if [[ "$arch" == "arm" ]]; then
         build_tvos 10.2 arm64
     fi
 else
-    build_mac 10.9
-    build_mac 10.10
-    build_mac 10.11
-    build_mac 10.12
+    #    build_mac 10.9
+    #    build_mac 10.10
+    #    build_mac 10.11
+    #    build_mac 10.12
+    build_mac 12.2
 fi
-

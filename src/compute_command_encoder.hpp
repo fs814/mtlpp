@@ -37,6 +37,9 @@ namespace mtlpp
         void DispatchThreadgroupsWithIndirectBuffer(const Buffer& indirectBuffer, uint32_t indirectBufferOffset, const Size& threadsPerThreadgroup);
         void UpdateFence(const Fence& fence) MTLPP_AVAILABLE_IOS(10_0);
         void WaitForFence(const Fence& fence) MTLPP_AVAILABLE_IOS(10_0);
+        void UseResource(const Buffer& buffer,mtlpp::ResourceUsage usage);
+        void UseResource(const IndirectCommandBuffer& buffer,mtlpp::ResourceUsage usage);
+        void DispatchThreads(const ns::Size& threads,const ns::Size& threadgroup);
     }
     MTLPP_AVAILABLE(10_11, 8_0);
 }

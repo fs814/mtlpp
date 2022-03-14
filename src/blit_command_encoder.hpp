@@ -40,5 +40,7 @@ namespace mtlpp
         void Fill(const Buffer& buffer, const ns::Range& range, uint8_t value);
         void UpdateFence(const Fence& fence) MTLPP_AVAILABLE_IOS(10_0);
         void WaitForFence(const Fence& fence) MTLPP_AVAILABLE_IOS(10_0);
+        void ResetCommandsInBuffer(const IndirectCommandBuffer& indirectCommandBuffer,ns::Range& range);
+        void OptimizeIndirectCommandBuffer(const IndirectCommandBuffer& indirectCommandBuffer, const ns::Range& range);
     };
 }

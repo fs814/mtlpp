@@ -183,6 +183,8 @@ namespace mtlpp
         void DrawPatches(uint32_t numberOfPatchControlPoints, const Buffer& patchIndexBuffer, uint32_t patchIndexBufferOffset, const Buffer& indirectBuffer, uint32_t indirectBufferOffset) MTLPP_AVAILABLE(10_12, NA);
         void DrawIndexedPatches(uint32_t numberOfPatchControlPoints, uint32_t patchStart, uint32_t patchCount, const Buffer& patchIndexBuffer, uint32_t patchIndexBufferOffset, const Buffer& controlPointIndexBuffer, uint32_t controlPointIndexBufferOffset, uint32_t instanceCount, uint32_t baseInstance) MTLPP_AVAILABLE(10_12, 10_0);
         void DrawIndexedPatches(uint32_t numberOfPatchControlPoints, const Buffer& patchIndexBuffer, uint32_t patchIndexBufferOffset, const Buffer& controlPointIndexBuffer, uint32_t controlPointIndexBufferOffset, const Buffer& indirectBuffer, uint32_t indirectBufferOffset) MTLPP_AVAILABLE(10_12, NA);
+      void UseResource(const Buffer& buffer,mtlpp::ResourceUsage usage);
+      void ExecuteCommandsInBuffer(IndirectCommandBuffer indirectCommandBuffer,const ns::Range& range);
     }
     MTLPP_AVAILABLE(10_11, 8_0);
 }
